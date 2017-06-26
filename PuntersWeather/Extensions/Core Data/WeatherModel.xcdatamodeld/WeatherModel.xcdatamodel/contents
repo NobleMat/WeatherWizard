@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Country" representedClassName="Country" syncable="YES" codeGenerationType="class">
+        <attribute name="countryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="countryName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="weather" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Weather" inverseName="countryDetails" inverseEntity="Weather" syncable="YES"/>
+    </entity>
+    <entity name="Sport" representedClassName="Sport" syncable="YES" codeGenerationType="class">
+        <attribute name="sportDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sportID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="weather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Weather" inverseName="sportDetails" inverseEntity="Weather" syncable="YES"/>
+    </entity>
+    <entity name="Weather" representedClassName="Weather" syncable="YES" codeGenerationType="class">
+        <attribute name="placeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="venueID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weatherCondition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="weatherFeelsLike" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weatherHumidity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="weatherLastUpdated" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weatherTemperature" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weatherWind" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="countryDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Country" inverseName="weather" inverseEntity="Country" syncable="YES"/>
+        <relationship name="sportDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sport" inverseName="weather" inverseEntity="Sport" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Weather" positionX="-63" positionY="-18" width="128" height="195"/>
+        <element name="Country" positionX="-54" positionY="54" width="128" height="90"/>
+        <element name="Sport" positionX="-36" positionY="63" width="128" height="90"/>
+    </elements>
+</model>
