@@ -256,6 +256,7 @@ extension PPlaceListViewController: UISearchBarDelegate {
     if searchText.isEmpty {
       isFiltered = false
       self.listCollectionView.reloadData()
+      searchBar.resignFirstResponder()
     }
   }
   
