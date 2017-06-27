@@ -30,6 +30,8 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   
   let cellIdentifier = "WeatherCell"
   var weatherItems = [Weather]()
+  var filteredItems = [Weather]()
+  var isFiltered = false
   let managedContext = CoreDataStack.shared.persistentContainer.viewContext
   
   // MARK: - Object lifecycle
@@ -69,8 +71,14 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
       print("Error fetching data \(error.localizedDescription)")
     }
   }
+  
+  lazy var menuView: MenuView = {
+    let menu = MenuView()
+    menu.homeController = self
+    return menu
+  }()
   @IBAction func filterResults(_ sender: Any) {
-    
+    menuView.showSettings(.filter)
   }
   
   @IBAction func refreshList(_ sender: Any) {
@@ -78,8 +86,12 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     output.getWeatherData()
   }
   
+ 
   @IBAction func sortList(_ sender: Any) {
+    //Show sort menu to figure out way to sort
+    menuView.showSettings(.sort)
   }
+
 }
 
 
@@ -94,6 +106,18 @@ extension PPlaceListViewController: UICollectionViewDelegate {
     
   }
   
+  func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    cell.alpha = 0
+    
+    let transform = CATransform3DTranslate(CATransform3DIdentity, -200, 0, 0)
+    cell.layer.transform = transform
+    
+    UIView.animate(withDuration: 1.0) { 
+      cell.alpha = 1
+      cell.layer.transform = CATransform3DIdentity
+    }
+  }
+  
 }
 
 //MARK: - CollectionView DataSource
@@ -104,6 +128,9 @@ extension PPlaceListViewController: UICollectionViewDataSource {
    */
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     print("count \(weatherItems.count)")
+    if isFiltered {
+      return filteredItems.count
+    }
     return weatherItems.count
   }
   
@@ -120,7 +147,12 @@ extension PPlaceListViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PPlaceListCollectionViewCell
     
-    let weatherData = weatherItems[indexPath.item]
+    var weatherData: Weather!
+    if isFiltered {
+      weatherData = filteredItems[indexPath.item]
+    } else {
+      weatherData = weatherItems[indexPath.item]
+    }
     
     cell.placeNameLabel.text = weatherData.placeName
     cell.temperatureLabel.text = "\(weatherData.weatherTemperature) ºc"

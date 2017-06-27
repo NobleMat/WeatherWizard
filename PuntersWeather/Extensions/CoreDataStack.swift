@@ -22,7 +22,7 @@ final class CoreDataStack {
   lazy var persistentContainer: NSPersistentContainer = {
     let container = NSPersistentContainer(name: "WeatherModel")
     container.loadPersistentStores(completionHandler: { (description, error) in
-      container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+      container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
       if let error = error {
         print("Unresolved error \(error)")
       }

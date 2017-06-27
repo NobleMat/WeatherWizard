@@ -52,7 +52,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcw-mB-9Pz">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="zcw-mB-9Pz">
                                                             <rect key="frame" x="288" y="8" width="65" height="46"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="HhE-q1-9ip"/>
@@ -63,7 +63,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="zJc-7n-k8z">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zJc-7n-k8z">
                                                             <rect key="frame" x="288" y="54" width="65" height="21"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="65" id="D5F-Rb-Bba"/>
@@ -173,7 +173,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="84d-JN-MuT">
-                        <barButtonItem key="leftBarButtonItem" title="Filter" id="yaz-c6-RIG">
+                        <barButtonItem key="leftBarButtonItem" image="filter" id="yaz-c6-RIG">
                             <connections>
                                 <action selector="filterResults:" destination="BYZ-38-t0r" id="rXW-Rq-K0N"/>
                             </connections>
@@ -184,7 +184,7 @@
                                     <action selector="refreshList:" destination="BYZ-38-t0r" id="T4j-YO-0Pz"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Sort" id="mgK-j0-s9Y">
+                            <barButtonItem image="sort" id="mgK-j0-s9Y">
                                 <connections>
                                     <action selector="sortList:" destination="BYZ-38-t0r" id="bOZ-tb-2wQ"/>
                                 </connections>
@@ -218,4 +218,8 @@
             <point key="canvasLocation" x="1991.2" y="-545.57721139430294"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="filter" width="22" height="22"/>
+        <image name="sort" width="22" height="22"/>
+    </resources>
 </document>

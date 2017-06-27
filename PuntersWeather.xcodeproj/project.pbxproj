@@ -27,6 +27,7 @@
 		8C7A2A6E1F01320900C31144 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A2A6D1F01320900C31144 /* CardView.swift */; };
 		8C7A2A701F013F0400C31144 /* UIVisualEffectViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A2A6F1F013F0400C31144 /* UIVisualEffectViewX.swift */; };
 		8C7A2A721F013F3B00C31144 /* UIViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A2A711F013F3B00C31144 /* UIViewX.swift */; };
+		8C7A2A741F01DFF700C31144 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A2A731F01DFF700C31144 /* MenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		8C7A2A6D1F01320900C31144 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardView.swift; path = Views/CardView.swift; sourceTree = "<group>"; };
 		8C7A2A6F1F013F0400C31144 /* UIVisualEffectViewX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIVisualEffectViewX.swift; path = Views/UIVisualEffectViewX.swift; sourceTree = "<group>"; };
 		8C7A2A711F013F3B00C31144 /* UIViewX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewX.swift; path = Views/UIViewX.swift; sourceTree = "<group>"; };
+		8C7A2A731F01DFF700C31144 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuView.swift; path = Views/MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 				8C7A2A6D1F01320900C31144 /* CardView.swift */,
 				8C7A2A6F1F013F0400C31144 /* UIVisualEffectViewX.swift */,
 				8C7A2A711F013F3B00C31144 /* UIViewX.swift */,
+				8C7A2A731F01DFF700C31144 /* MenuView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				8C7A2A2E1F007C7800C31144 /* AppDelegate.swift in Sources */,
 				8C7A2A701F013F0400C31144 /* UIVisualEffectViewX.swift in Sources */,
 				8C7A2A631F008C1F00C31144 /* CoreDataStack.swift in Sources */,
+				8C7A2A741F01DFF700C31144 /* MenuView.swift in Sources */,
 				8C7A2A5D1F00810D00C31144 /* PPlaceListModels.swift in Sources */,
 				8C7A2A5F1F00810D00C31144 /* PPlaceListRouter.swift in Sources */,
 				8C7A2A5C1F00810D00C31144 /* PPlaceListInteractor.swift in Sources */,
