@@ -35,7 +35,6 @@ class PPlaceListWorker {
     //Setting up the Session
     let config = URLSessionConfiguration.default
     let session = URLSession(configuration: config)
-    var weatherConditions = [String]()
     
     //Making the request & Fetching the data
     let task = session.dataTask(with: urlRequest) { (fetchedData, response, error) in

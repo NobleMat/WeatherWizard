@@ -27,6 +27,7 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   //MARK: - VC Elements
   
   @IBOutlet weak var listCollectionView: UICollectionView!
+  @IBOutlet weak var searchBar: UISearchBar!
   
   let cellIdentifier = "WeatherCell"
   var weatherItems = [Weather]()
@@ -48,13 +49,17 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     
     self.title = "WW"
     self.navigationController?.regularNavigationBar()
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+    self.automaticallyAdjustsScrollViewInsets = false
     
+    //Get weather Deatils
     WeatherActivityIndicator.showActivityIndicator(self.view)
     output.getWeatherData()
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    
+    self.searchBar.resignFirstResponder()
   }
   
   // MARK: - Event handling
@@ -86,6 +91,7 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     menu.homeController = self
     return menu
   }()
+  
   @IBAction func filterResults(_ sender: Any) {
     menuView.showSettings(.filter)
   }
@@ -235,5 +241,33 @@ extension PPlaceListViewController: UICollectionViewDataSource {
     cell.weatherConditionLabel.text = weatherData.countryDetails?.countryName
     
     return cell
+  }
+}
+
+extension PPlaceListViewController: UISearchBarDelegate {
+  
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    filteredItems = weatherItems.filter {
+      $0.placeName!.contains(searchText)
+    }
+    isFiltered = true
+    self.listCollectionView.reloadData()
+    
+    if searchText.isEmpty {
+      isFiltered = false
+      self.listCollectionView.reloadData()
+    }
+  }
+  
+  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+  }
+  
+}
+
+extension PPlaceListViewController: UIScrollViewDelegate {
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    self.searchBar.resignFirstResponder()
   }
 }

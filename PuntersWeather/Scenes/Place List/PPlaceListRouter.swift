@@ -12,17 +12,24 @@
 import UIKit
 
 protocol PPlaceListRouterInput {
-  func navigateToDetailsPage()
 }
 
 class PPlaceListRouter: PPlaceListRouterInput {
   weak var viewController: PPlaceListViewController!
   
   // MARK: - Navigation
-  
-  func navigateToDetailsPage() {
-    // Storyboard segue to Details VC
-    viewController.performSegue(withIdentifier: "", sender: nil)
+  func passDataToNextScene(segue: UIStoryboardSegue) {
+    if segue.identifier == "DetailsSegueIdentifier" {
+      var selectedRowIndex = viewController.listCollectionView.indexPathsForSelectedItems?.first!
+      let detailsVC:PPlaceDetailsViewController = segue.destination as! PPlaceDetailsViewController
+      var weather: Weather?
+      if viewController.isFiltered {
+        weather = viewController.filteredItems[selectedRowIndex!.item]
+      } else {
+        weather = viewController.weatherItems[selectedRowIndex!.item]
+      }
+      detailsVC.weatherDetails = weather
+    }
   }
   
 }
