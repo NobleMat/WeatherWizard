@@ -16,11 +16,25 @@ enum weatherType: String {
 extension TimeInterval {
   
   /*
-   Convert TimeInterval to String
+   Convert TimeInterval to Date String
+   
+   - returns: A String after converting from the interval
+   */
+  func convertToDateString() -> String {
+    let convertedDate = Date(timeIntervalSince1970: self)
+    
+    let newDateFormatter = DateFormatter()
+    newDateFormatter.dateFormat = "dd/MM/yyy"
+    let dateString = newDateFormatter.string(from: convertedDate)
+    return dateString
+  }
+  
+  /*
+   Convert TimeInterval to Date and Time String
    
    - returns: A String after converting from the interval
  */
-  func convertToString() -> String {
+  func convertToDateTimeString() -> String {
     let convertedDate = Date(timeIntervalSince1970: self)
     
     let newDateFormatter = DateFormatter()
@@ -141,5 +155,24 @@ extension UIView {
     }
     
     addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+  }
+}
+
+extension Sequence where Iterator.Element: Hashable {
+  func unique() -> [Iterator.Element] {
+    var seen: [Iterator.Element: Bool] = [:]
+    return self.filter { seen.updateValue(true, forKey: $0) == nil }
+  }
+}
+
+extension Double {
+  func temperatureInFahrenheit() -> Double {
+    let fahrenheitTemperature = self * 9 / 5 + 32
+    return fahrenheitTemperature
+  }
+  
+  func temperatureInCelsius() -> Double {
+    let celsiusTemperature = 5 / 9 * (self - 32)
+    return celsiusTemperature
   }
 }

@@ -33,6 +33,8 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   var filteredItems = [Weather]()
   var isFiltered = false
   let managedContext = CoreDataStack.shared.persistentContainer.viewContext
+  var countryList = [String]()
+  var weatherList = [String]()
   
   // MARK: - Object lifecycle
   override func awakeFromNib() {
@@ -59,10 +61,17 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   func loadData() {
     let weatherDataUpdate: NSFetchRequest<Weather> = Weather.fetchRequest()
     do {
+      
       weatherItems = try managedContext.fetch(weatherDataUpdate)
       weatherItems = weatherItems.sorted {
         $0.0.placeName! < $0.1.placeName!
       }
+      countryList = weatherItems.flatMap {
+        $0.countryDetails?.countryName
+      }.unique()
+      weatherList = weatherItems.flatMap {
+        $0.weatherCondition
+      }.unique()
       DispatchQueue.main.async {
         WeatherActivityIndicator.hideActivityIndicator(self.view)
         self.listCollectionView.reloadData()
@@ -82,6 +91,7 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   }
   
   @IBAction func refreshList(_ sender: Any) {
+    weatherItems = []
     WeatherActivityIndicator.showActivityIndicator(self.view)
     output.getWeatherData()
   }
@@ -91,7 +101,76 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     //Show sort menu to figure out way to sort
     menuView.showSettings(.sort)
   }
-
+  
+  //MARK: - Sorting Method
+  func sortListUsing(_ sortType: SortingTypes) {
+    switch sortType {
+    case .alphabetically:
+      if isFiltered {
+        filteredItems = filteredItems.sorted {
+          $0.placeName!.localizedCaseInsensitiveCompare($1.placeName!) == ComparisonResult.orderedAscending
+        }
+      } else {
+        weatherItems = weatherItems.sorted {
+          $0.placeName!.localizedCaseInsensitiveCompare($1.placeName!) == ComparisonResult.orderedAscending
+        }
+      }
+      break
+    case .temperature:
+      if isFiltered {
+        filteredItems = filteredItems.sorted {
+          $0.weatherTemperature < $1.weatherTemperature
+        }
+      } else {
+        weatherItems = weatherItems.sorted {
+          $0.weatherTemperature < $1.weatherTemperature
+        }
+      }
+      break
+    case .lastUpdated:
+      if isFiltered {
+        filteredItems = filteredItems.sorted {
+          $0.weatherLastUpdated < $1.weatherLastUpdated
+        }
+      } else {
+        weatherItems = weatherItems.sorted {
+          $0.weatherLastUpdated < $1.weatherLastUpdated
+        }
+      }
+      break
+    default:
+      break
+    }
+    self.listCollectionView.reloadData()
+  }
+  
+  //MARK: - Filtering Method
+  func filerListUsing(_ filterType: FilterIngType, filterValue: String) {
+    switch filterType {
+    case .country:
+      filteredItems = weatherItems.filter {
+        $0.countryDetails?.countryName == filterValue
+      }
+      isFiltered = true
+      break
+    case .weatherCondition:
+      filteredItems = weatherItems.filter {
+        $0.weatherCondition == filterValue
+      }
+      isFiltered = true
+      break
+    case .removeFilter:
+      isFiltered = false
+      break
+    default:
+      break
+    }
+    self.listCollectionView.reloadData()
+  }
+  
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    menuView.handleBackgroundViewDismiss()
+  }
 }
 
 
@@ -109,12 +188,8 @@ extension PPlaceListViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     cell.alpha = 0
     
-    let transform = CATransform3DTranslate(CATransform3DIdentity, -200, 0, 0)
-    cell.layer.transform = transform
-    
     UIView.animate(withDuration: 1.0) { 
       cell.alpha = 1
-      cell.layer.transform = CATransform3DIdentity
     }
   }
   
@@ -156,7 +231,7 @@ extension PPlaceListViewController: UICollectionViewDataSource {
     
     cell.placeNameLabel.text = weatherData.placeName
     cell.temperatureLabel.text = "\(weatherData.weatherTemperature) ºc"
-    cell.lastUpdateLabel.text = "last updated on \(weatherData.weatherLastUpdated.convertToString())"
+    cell.lastUpdateLabel.text = "last updated on \(weatherData.weatherLastUpdated.convertToDateString())"
     cell.weatherConditionLabel.text = weatherData.countryDetails?.countryName
     
     return cell

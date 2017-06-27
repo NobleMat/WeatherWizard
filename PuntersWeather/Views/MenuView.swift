@@ -14,14 +14,18 @@ enum SettingsType: Int {
   case filter
 }
 
-enum SortingTypes: Int {
-  case alphabetically = 0
-  case temperature
-  case lastUpdated
+enum SortingTypes: String {
+  case alphabetically = "Sort Alphabetically"
+  case temperature = "Sort By temperature"
+  case lastUpdated = "Sort by last Updated"
+  case cancel = "Cancel"
 }
 
-enum FilterIngType: Int {
-  
+enum FilterIngType: String {
+  case country = "Filter By Country"
+  case weatherCondition = "Filter By Weather Condition"
+  case removeFilter = "Remove Filter"
+  case cancel = "Cancel"
 }
 
 class MenuView: NSObject {
@@ -29,9 +33,11 @@ class MenuView: NSObject {
   var homeController: PPlaceListViewController?
   let settingsCellID = "SettingsCell"
   let cellHeight:CGFloat = 50
+  var selectedFilterType: FilterIngType?
+  var filterStrings = [String]()
   var menuType: SettingsType!
-  let sortTypes = ["Sort Alphabetically", "Sort By temperature", "Sort by last Updated", "Cancel"]
-  let filterTypes = ["Filter By Country", "Filter By WEather Condition", "Cancel"]
+  let sortTypes: [SortingTypes] = [.alphabetically, .temperature, .lastUpdated, .cancel]
+  let filterTypes: [FilterIngType] = [.country, .weatherCondition, .removeFilter, .cancel]
   
   lazy var blackBackgroundView: UIView = {
     let view = UIView()
@@ -51,7 +57,7 @@ class MenuView: NSObject {
   func showSettings(_ menuType: SettingsType) {
     self.menuType = menuType
     if let window = UIApplication.shared.keyWindow {
-      blackBackgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleBackgroundViewDismiss(_:))))
+      blackBackgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleBackgroundViewDismiss)))
       
       window.addSubview(blackBackgroundView)
       window.addSubview(collectionView)
@@ -63,6 +69,11 @@ class MenuView: NSObject {
       let cellHeight:CGFloat = 50
       switch self.menuType.rawValue {
       case SettingsType.filter.rawValue:
+        if let _ = self.selectedFilterType {
+          height = CGFloat(filterStrings.count) * cellHeight
+        } else {
+          height = CGFloat(filterTypes.count) * cellHeight
+        }
         break
       case SettingsType.sort.rawValue:
         height = CGFloat(sortTypes.count) * cellHeight
@@ -75,19 +86,22 @@ class MenuView: NSObject {
       
       UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: { 
         self.blackBackgroundView.alpha = 1
+        self.collectionView.alpha = 1
         self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
       }, completion: nil)
     }
+    collectionView.reloadData()
   }
   
-  func handleBackgroundViewDismiss(_ recogniser: UITapGestureRecognizer) {
+  func handleBackgroundViewDismiss() {
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: { 
       self.blackBackgroundView.alpha = 0
       if let window = UIApplication.shared.keyWindow {
         self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+        self.collectionView.alpha = 0
       }
-    }) { (success) in
-      <#code#>
+    }) { (success: Bool) in
+      
     }
     
   }
@@ -100,6 +114,7 @@ class MenuView: NSObject {
     
     collectionView.register(SettingsCell.self, forCellWithReuseIdentifier: settingsCellID)
   }
+  
 }
 
 extension MenuView: UICollectionViewDelegateFlowLayout {
@@ -119,8 +134,54 @@ extension MenuView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     switch self.menuType.rawValue {
     case SettingsType.filter.rawValue:
+      if let selectedFilter = self.selectedFilterType {
+        handleBackgroundViewDismiss()
+        if let homeVC = homeController {
+          homeVC.filerListUsing(selectedFilter, filterValue: filterStrings[indexPath.item])
+          self.selectedFilterType = nil
+        }
+      } else {
+        if filterTypes[indexPath.item] != .cancel && filterTypes[indexPath.item] != .removeFilter {
+          self.selectedFilterType = filterTypes[indexPath.item]
+          
+          switch self.selectedFilterType! {
+          case .country:
+            if let homeVC = homeController {
+              filterStrings = homeVC.countryList
+            }
+            break
+          case .weatherCondition:
+            if let homeVC = homeController {
+              filterStrings = homeVC.weatherList
+            }
+            break
+          default:
+            break
+          }
+          self.collectionView.reloadData()
+          if let window = UIApplication.shared.keyWindow {
+            let maxHeight: CGFloat = 500
+            let cellHeight:CGFloat = 50
+            let height: CGFloat = CGFloat(filterStrings.count) * cellHeight
+            let y:CGFloat = window.frame.height - min(height, maxHeight)
+            collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: min(height, maxHeight))
+            
+          }
+        } else if filterTypes[indexPath.item] == .removeFilter {
+          handleBackgroundViewDismiss()
+          homeController?.filerListUsing(.removeFilter, filterValue: "")
+        } else {
+          handleBackgroundViewDismiss()
+        }
+      }
       break
     case SettingsType.sort.rawValue:
+      if sortTypes[indexPath.item] != .cancel {
+        handleBackgroundViewDismiss()
+        homeController?.sortListUsing(sortTypes[indexPath.item])
+      } else {
+        handleBackgroundViewDismiss()
+      }
       break
     default:
       break
@@ -137,9 +198,14 @@ extension MenuView: UICollectionViewDataSource {
     var labelText = ""
     switch self.menuType.rawValue {
     case SettingsType.filter.rawValue:
+      if let _ = self.selectedFilterType {
+        labelText = filterStrings[indexPath.item]
+      } else {
+        labelText = filterTypes[indexPath.item].rawValue
+      }
       break
     case SettingsType.sort.rawValue:
-      labelText = sortTypes[indexPath.item]
+      labelText = sortTypes[indexPath.item].rawValue
       break
     default:
       break
@@ -151,7 +217,10 @@ extension MenuView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     switch self.menuType.rawValue {
     case SettingsType.filter.rawValue:
-      return 1
+      if let _ = selectedFilterType {
+        return filterStrings.count
+      }
+      return filterTypes.count
     case SettingsType.sort.rawValue:
       return sortTypes.count
     default:

@@ -1,4 +1,4 @@
-//
+ //
 //  PPlaceListWorker.swift
 //  PuntersWeather
 //
@@ -69,14 +69,6 @@ class PPlaceListWorker {
               weatherItem.venueID = Int32(weather["_venueID"] as! String)!
               weatherItem.placeName = weather["_name"] as? String
               weatherItem.weatherCondition = weather["_weatherCondition"] as? String
-              
-              let weatherC = weather["_weatherCondition"] as? String ?? ""
-              
-              if !weatherC.isEmpty && !weatherConditions.contains(weatherC) {
-                weatherConditions.append(weatherC)
-              }
-              
-              
               weatherItem.weatherWind = weather["_weatherWind"] as? String
               weatherItem.weatherHumidity = weather["_weatherHumidity"] as? String
               if let weatherTemperatureString = weather["_weatherTemp"] as? String, let weatherTemperature = Double(weatherTemperatureString) {
