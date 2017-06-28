@@ -10,6 +10,7 @@
 		8C04176A1F023B02006E6F40 /* PPlaceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0417691F023B02006E6F40 /* PPlaceDetailsViewController.swift */; };
 		8C04176C1F02482D006E6F40 /* ParticleEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C04176B1F02482D006E6F40 /* ParticleEmitter.swift */; };
 		8C04176E1F02A3CD006E6F40 /* RadialGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C04176D1F02A3CD006E6F40 /* RadialGradientView.swift */; };
+		8C0417701F039291006E6F40 /* PPlacelistheaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C04176F1F039291006E6F40 /* PPlacelistheaderCollectionReusableView.swift */; };
 		8C7A2A2E1F007C7800C31144 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A2A2D1F007C7800C31144 /* AppDelegate.swift */; };
 		8C7A2A331F007C7800C31144 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C7A2A311F007C7800C31144 /* Main.storyboard */; };
 		8C7A2A351F007C7800C31144 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C7A2A341F007C7800C31144 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		8C0417691F023B02006E6F40 /* PPlaceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPlaceDetailsViewController.swift; path = "Scenes/Place Details/PPlaceDetailsViewController.swift"; sourceTree = "<group>"; };
 		8C04176B1F02482D006E6F40 /* ParticleEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParticleEmitter.swift; path = Views/ParticleEmitter.swift; sourceTree = "<group>"; };
 		8C04176D1F02A3CD006E6F40 /* RadialGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RadialGradientView.swift; path = Views/RadialGradientView.swift; sourceTree = "<group>"; };
+		8C04176F1F039291006E6F40 /* PPlacelistheaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPlacelistheaderCollectionReusableView.swift; path = "Scenes/Place List/Cells/PPlacelistheaderCollectionReusableView.swift"; sourceTree = "<group>"; };
 		8C7A2A2A1F007C7800C31144 /* PuntersWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuntersWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7A2A2D1F007C7800C31144 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C7A2A321F007C7800C31144 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				8C7A2A681F0130F200C31144 /* PPlaceListCollectionViewCell.swift */,
+				8C04176F1F039291006E6F40 /* PPlacelistheaderCollectionReusableView.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				8C7A2A661F008E6800C31144 /* WeatherModel.xcdatamodeld in Sources */,
 				8C7A2A4F1F00801C00C31144 /* Extensions.swift in Sources */,
 				8C04176E1F02A3CD006E6F40 /* RadialGradientView.swift in Sources */,
+				8C0417701F039291006E6F40 /* PPlacelistheaderCollectionReusableView.swift in Sources */,
 				8C7A2A6E1F01320900C31144 /* CardView.swift in Sources */,
 				8C7A2A2E1F007C7800C31144 /* AppDelegate.swift in Sources */,
 				8C7A2A701F013F0400C31144 /* UIVisualEffectViewX.swift in Sources */,

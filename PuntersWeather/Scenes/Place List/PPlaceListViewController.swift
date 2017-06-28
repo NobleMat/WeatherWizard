@@ -21,16 +21,22 @@ protocol PPlaceListViewControllerOutput {
 }
 
 class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput {
+  //MARK: - VC Elements
   var output: PPlaceListViewControllerOutput!
   var router: PPlaceListRouter!
   
-  //MARK: - VC Elements
+  lazy var menuView: MenuView = {
+    let menu = MenuView()
+    menu.homeController = self
+    return menu
+  }()
   
   @IBOutlet weak var listCollectionView: UICollectionView!
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var filterBarButton: UIBarButtonItem!
   
   let cellIdentifier = "WeatherCell"
+  let headerIdentifier = "PPlaceHeaderCell"
   var weatherItems = [Weather]()
   var filteredItems = [Weather]()
   var isFiltered = false
@@ -63,7 +69,14 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     self.searchBar.resignFirstResponder()
   }
   
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    menuView.handleBackgroundViewDismiss()
+  }
+  
   // MARK: - Event handling
+  /**
+   Load the data from the core data stack
+   */
   func loadData() {
     let weatherDataUpdate: NSFetchRequest<Weather> = Weather.fetchRequest()
     do {
@@ -86,12 +99,7 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     }
   }
   
-  lazy var menuView: MenuView = {
-    let menu = MenuView()
-    menu.homeController = self
-    return menu
-  }()
-  
+  //MARK: - IB Actions
   @IBAction func filterResults(_ sender: Any) {
     menuView.showSettings(.filter)
   }
@@ -100,8 +108,8 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     weatherItems = []
     WeatherActivityIndicator.showActivityIndicator(self.view)
     output.getWeatherData()
+    listCollectionView.setNeedsDisplay()
   }
-  
   
   @IBAction func sortList(_ sender: Any) {
     //Show sort menu to figure out way to sort
@@ -109,6 +117,11 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   }
   
   //MARK: - Sorting Method
+  /**
+   Method used to change the sorting of the dataSource
+   
+   - parameter sortType: Sort type enum used to determine the base for sorting the database
+ */
   func sortListUsing(_ sortType: SortingTypes) {
     switch sortType {
     case .alphabetically:
@@ -151,6 +164,12 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   }
   
   //MARK: - Filtering Method
+  /**
+   Filter the datasoure using the filter value provided
+   
+   - parameter filterType: Filter type enum that is used to figure out the parameter that needs to be used to be filtered
+   - parameter filterValue: Filter value used to fetch the appropriater resuts
+ */
   func filerListUsing(_ filterType: FilterIngType, filterValue: String) {
     switch filterType {
     case .country:
@@ -175,10 +194,6 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
       break
     }
     self.listCollectionView.reloadData()
-  }
-  
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    menuView.handleBackgroundViewDismiss()
   }
 }
 
@@ -245,8 +260,19 @@ extension PPlaceListViewController: UICollectionViewDataSource {
     
     return cell
   }
+  
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    var reuseableView = UICollectionReusableView()
+    if kind == UICollectionElementKindSectionHeader {
+      let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerIdentifier, for: indexPath) as! PPlacelistheaderCollectionReusableView
+      headerCell.lastUpdatedLabel.text = "Last updated at \(Date().toReadableString())"
+      reuseableView = headerCell
+    }
+    return reuseableView
+  }
 }
 
+//MARK: - SearchBar Delegate
 extension PPlaceListViewController: UISearchBarDelegate {
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -269,6 +295,7 @@ extension PPlaceListViewController: UISearchBarDelegate {
   
 }
 
+//MARK: - Scroll View Delegate
 extension PPlaceListViewController: UIScrollViewDelegate {
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

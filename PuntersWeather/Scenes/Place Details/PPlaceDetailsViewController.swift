@@ -13,6 +13,7 @@ class PPlaceDetailsViewController: UIViewController {
   @IBOutlet weak var backgroundView: UIViewX!
   var weatherDetails: Weather!
   let cellIdentifiersArray:[String] = ["LastUpdateCellIdentifier", "PlaceNameCellIdentifier", "WeatherTempCellIdentifier", "cell", "cell", "OtherDetailsCellIdentifier"]
+  var isCelsius = true
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -102,6 +103,7 @@ class PPlaceDetailsViewController: UIViewController {
   
 }
 
+//MARK: - Table View Data source
 extension PPlaceDetailsViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -144,7 +146,11 @@ extension PPlaceDetailsViewController: UITableViewDataSource {
       
     case 2: // Weather temp
       cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifiersArray[indexPath.row])
-      cell.textLabel?.text = "\(weatherDetails.weatherTemperature)ºC"
+      if !isCelsius {
+        cell.textLabel?.text = "\(weatherDetails.weatherTemperature.temperatureInFahrenheit()) ºF"
+      } else {
+        cell.textLabel?.text = "\(weatherDetails.weatherTemperature) ºC"
+      }
       cell.textLabel?.font = UIFont(name: "SnellRoundhand", size: 40)
       cell.textLabel?.textAlignment = .center
       cell.backgroundColor = .clear
@@ -164,6 +170,7 @@ extension PPlaceDetailsViewController: UITableViewDataSource {
   
 }
 
+//MARK: - Table View delegate
 extension PPlaceDetailsViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -174,6 +181,21 @@ extension PPlaceDetailsViewController: UITableViewDelegate {
       return buildWeatherDetails(weather: weatherDetails).height(withConstrainedWidth: tableView.frame.width, font: UIFont(name: "Baskerville", size: 25)!)
     default:
       return 50
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.row == 2 {
+      isCelsius = !isCelsius
+      tableView.reloadRows(at: [indexPath], with: .fade)
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    cell.alpha = 0
+    
+    UIView.animate(withDuration: 1.0) {
+      cell.alpha = 1
     }
   }
 }

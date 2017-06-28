@@ -28,13 +28,13 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="mmf-ul-eah">
                                     <size key="itemSize" width="355" height="83"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="30"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="WeatherCell" id="piD-8W-aGu" customClass="PPlaceListCollectionViewCell" customModule="PuntersWeather" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="10" width="355" height="83"/>
+                                        <rect key="frame" x="10" y="40" width="355" height="83"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="355" height="83"/>
@@ -159,6 +159,28 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PPlaceHeaderCell" id="W5G-OE-wNI" customClass="PPlacelistheaderCollectionReusableView" customModule="PuntersWeather" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aht-nB-x0N">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="aht-nB-x0N" firstAttribute="height" secondItem="W5G-OE-wNI" secondAttribute="height" id="MOy-9l-9xA"/>
+                                        <constraint firstItem="aht-nB-x0N" firstAttribute="width" secondItem="W5G-OE-wNI" secondAttribute="width" id="S9B-Hc-iPS"/>
+                                        <constraint firstItem="aht-nB-x0N" firstAttribute="centerX" secondItem="W5G-OE-wNI" secondAttribute="centerX" id="iLx-sc-iza"/>
+                                        <constraint firstItem="aht-nB-x0N" firstAttribute="centerY" secondItem="W5G-OE-wNI" secondAttribute="centerY" id="qbG-HS-ubN"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="lastUpdatedLabel" destination="aht-nB-x0N" id="o1H-ed-2vY"/>
+                                    </connections>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="NaR-aq-qkX"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="HiN-oi-MUN"/>
@@ -215,7 +237,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3308" y="-589"/>
+            <point key="canvasLocation" x="3308" y="-589.65517241379314"/>
         </scene>
         <!--Place Details View Controller-->
         <scene sceneID="1uZ-FK-BDs">
@@ -233,7 +255,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gLJ-yP-QnP">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gLJ-yP-QnP">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>

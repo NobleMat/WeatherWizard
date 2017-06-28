@@ -33,7 +33,7 @@ extension TimeInterval {
    Convert TimeInterval to Date and Time String
    
    - returns: A String after converting from the interval
- */
+   */
   func convertToDateTimeString() -> String {
     let convertedDate = Date(timeIntervalSince1970: self)
     
@@ -65,11 +65,6 @@ extension UIColor {
     
     self.init(red: CGFloat(red) / 0xff, green: CGFloat(green) / 0xff, blue: CGFloat(blue) / 0xff, alpha: alpha)
   }
-  
-//  convenience init(weatherCondition: String) {
-//    
-//  }
-  
 }
 
 //MARK: - WeatherActivityIndicator
@@ -122,22 +117,10 @@ class WeatherActivityIndicator {
 
 //MARK: - UINavigationBar
 extension UINavigationController {
-  func setRightButtons(_ buttons: UIBarButtonItem...) {
-    if buttons.count == 1 {
-      navigationItem.rightBarButtonItem = buttons.first
-    } else {
-      navigationItem.rightBarButtonItems = buttons
-    }
-  }
   
-  func setLeftBarButtons(_ buttons: UIBarButtonItem...) {
-    if buttons.count == 1 {
-      navigationItem.leftBarButtonItem = buttons.first
-    } else {
-      navigationItem.leftBarButtonItems = buttons
-    }
-  }
-  
+  /**
+   Set Default Navigation bar colors, tint and fontAttributes
+   */
   func regularNavigationBar() {
     navigationBar.barTintColor = UIColor(hex: "3182D9", alpha: 1)
     navigationBar.tintColor = UIColor.white
@@ -146,6 +129,12 @@ extension UINavigationController {
 }
 
 extension UIView {
+  /**
+   Add Constraints to the current view
+   
+   - parameter format: String to sprcify the Horizontal and Vertical constraints
+   - parameter views: Array of views that the format applies to
+   */
   func addConstraintsWithFormat(format: String, views: UIView...) {
     var viewsDictionary = [String: UIView]()
     for (index, view) in views.enumerated() {
@@ -159,6 +148,11 @@ extension UIView {
 }
 
 extension Sequence where Iterator.Element: Hashable {
+  /**
+   Remove all dupplicate entries in an array
+   
+   - returns: An array of unique elements
+   */
   func unique() -> [Iterator.Element] {
     var seen: [Iterator.Element: Bool] = [:]
     return self.filter { seen.updateValue(true, forKey: $0) == nil }
@@ -166,11 +160,21 @@ extension Sequence where Iterator.Element: Hashable {
 }
 
 extension Double {
+  /**
+   Convert Celsius to Fahrenheit
+   
+   - returns: Fahrenheit value of the input Temperature
+   */
   func temperatureInFahrenheit() -> Double {
     let fahrenheitTemperature = self * 9 / 5 + 32
     return fahrenheitTemperature
   }
   
+  /**
+   Convert Fahrenheit to Celsius
+   
+   - returns: Celsius value of the input Temperature
+   */
   func temperatureInCelsius() -> Double {
     let celsiusTemperature = 5 / 9 * (self - 32)
     return celsiusTemperature
@@ -178,10 +182,34 @@ extension Double {
 }
 
 extension String {
+  /**
+   Calculate the height of the bounding box that can contain the string
+   
+   - parameter width: Width of the containing view
+   - parameter font: Font of the label that will be using the string
+   
+   - returns: A CGFloat that can be used as the height the string requires to be
+   seen completely
+   */
   func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
     let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
     let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
     
     return boundingBox.height
+  }
+}
+
+extension Date {
+  
+  /*
+   Convert Date to Date and Time String
+   
+   - returns: A String after converting from the interval
+   */
+  func toReadableString() -> String {
+    let newDateFormatter = DateFormatter()
+    newDateFormatter.dateFormat = "dd/MM/yyy HH:mm"
+    let dateString = newDateFormatter.string(from: self)
+    return dateString
   }
 }

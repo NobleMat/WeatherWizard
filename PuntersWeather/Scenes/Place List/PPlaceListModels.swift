@@ -12,8 +12,4 @@
 import UIKit
 
 struct PPlaceList {
-  
-  struct Weather {
-  
-  }
 }
