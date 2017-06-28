@@ -10,33 +10,18 @@ import UIKit
 
 class PPlaceDetailsViewController: UIViewController {
   
-  @IBOutlet weak var lastUpdatedLabel: UILabel!
-  @IBOutlet weak var placeNameLabel: UILabel!
-  @IBOutlet weak var weatherConditionLabel: UILabel!
-  @IBOutlet weak var temperatureLabel: UILabel!
-  @IBOutlet weak var otherDetailsLabel: UILabel!
-  @IBOutlet weak var weatherCondition: UIImageView!
-  
   @IBOutlet weak var backgroundView: UIViewX!
   var weatherDetails: Weather!
+  let cellIdentifiersArray:[String] = ["LastUpdateCellIdentifier", "PlaceNameCellIdentifier", "WeatherTempCellIdentifier", "cell", "cell", "OtherDetailsCellIdentifier"]
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
-    fillLabelsWith(weatherDetails)
+    addBackgroundDetails(weatherDetails)
+    self.automaticallyAdjustsScrollViewInsets = false
     
     self.title = "Details"
-  }
-  
-  func fillLabelsWith(_ weather: Weather) {
-    lastUpdatedLabel.text = "Last Updated on \(weather.weatherLastUpdated.convertToDateTimeString())"
-    placeNameLabel.text = weather.placeName
-    weatherConditionLabel.text = weather.weatherCondition
-    weatherCondition.image = UIImage(named: weather.weatherCondition ?? "")
-    temperatureLabel.text = "\(weather.weatherTemperature)ºC"
-    otherDetailsLabel.text = buildWeatherDetails(weather: weather)
-    addBackgroundDetails(weather)
   }
   
   func buildWeatherDetails(weather: Weather) -> String {
@@ -53,8 +38,8 @@ class PPlaceDetailsViewController: UIViewController {
     if let humidity = weather.weatherHumidity {
       finalDetailsString += "\n\(humidity)"
     }
-    if let sportDetails = weather.sportDetails, let sportName = sportDetails.sportDescription, let place = weather.placeName {
-      finalDetailsString += "\n\nMost Liked Sport at \(place) is \(sportName)"
+    if let sportDetails = weather.sportDetails, let sportName = sportDetails.sportDescription {
+      finalDetailsString += "\n\nSport: \(sportName)"
     }
     
     return finalDetailsString
@@ -115,4 +100,80 @@ class PPlaceDetailsViewController: UIViewController {
     }
   }
   
+}
+
+extension PPlaceDetailsViewController: UITableViewDataSource {
+  
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return cellIdentifiersArray.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    var cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+    cell.backgroundColor = .clear
+    switch indexPath.row {
+    case 0: //lastUpdatedLabel
+      cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifiersArray[indexPath.row])
+      cell.textLabel?.text = "Last Updated on \(weatherDetails.weatherLastUpdated.convertToDateTimeString())"
+      cell.textLabel?.font = UIFont.systemFont(ofSize: 10)
+      cell.textLabel?.textAlignment = .center
+      
+      cell.backgroundColor = .clear
+      return cell
+      
+    case 1: //Place name and temp
+      cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifiersArray[indexPath.row])
+      cell.imageView?.image = UIImage(named: weatherDetails.weatherCondition ?? "")?.withRenderingMode(.alwaysTemplate)
+      cell.imageView?.tintColor = .black
+      
+      cell.textLabel?.text = weatherDetails.placeName
+      cell.textLabel?.font = UIFont(name: "Baskerville-SemiBoldItalic", size: 30)
+      cell.textLabel?.textAlignment = .center
+      
+      cell.detailTextLabel?.text = weatherDetails.weatherCondition
+      cell.detailTextLabel?.font = UIFont(name: "Baskerville", size: 15)
+      cell.detailTextLabel?.textAlignment = .center
+      
+      cell.backgroundColor = .clear
+      
+      return cell
+      
+    case 2: // Weather temp
+      cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifiersArray[indexPath.row])
+      cell.textLabel?.text = "\(weatherDetails.weatherTemperature)ºC"
+      cell.textLabel?.font = UIFont(name: "SnellRoundhand", size: 40)
+      cell.textLabel?.textAlignment = .center
+      cell.backgroundColor = .clear
+      return cell
+      
+    case 5: //Other details
+      cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifiersArray[indexPath.row])
+      cell.textLabel?.text = buildWeatherDetails(weather: weatherDetails)
+      cell.textLabel?.font = UIFont(name: "Baskerville", size: 25)
+      cell.textLabel?.numberOfLines = 0
+      cell.backgroundColor = .clear
+    default:
+      return cell
+    }
+    return cell
+  }
+  
+}
+
+extension PPlaceDetailsViewController: UITableViewDelegate {
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    switch indexPath.row {
+    case 1:
+      return 100
+    case 5:
+      return buildWeatherDetails(weather: weatherDetails).height(withConstrainedWidth: tableView.frame.width, font: UIFont(name: "Baskerville", size: 25)!)
+    default:
+      return 50
+    }
+  }
 }

@@ -28,6 +28,7 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   
   @IBOutlet weak var listCollectionView: UICollectionView!
   @IBOutlet weak var searchBar: UISearchBar!
+  @IBOutlet weak var filterBarButton: UIBarButtonItem!
   
   let cellIdentifier = "WeatherCell"
   var weatherItems = [Weather]()
@@ -102,7 +103,7 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
     output.getWeatherData()
   }
   
- 
+  
   @IBAction func sortList(_ sender: Any) {
     //Show sort menu to figure out way to sort
     menuView.showSettings(.sort)
@@ -158,15 +159,18 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
         $0.countryDetails?.countryName == filterValue
       }
       isFiltered = true
+      filterBarButton.tintColor = .black
       break
     case .weatherCondition:
       filteredItems = weatherItems.filter {
         $0.weatherCondition == filterValue
       }
       isFiltered = true
+      filterBarButton.tintColor = .black
       break
     case .removeFilter:
       isFiltered = false
+      filterBarButton.tintColor = .white
       break
     default:
       break
@@ -194,7 +198,7 @@ extension PPlaceListViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     cell.alpha = 0
     
-    UIView.animate(withDuration: 1.0) { 
+    UIView.animate(withDuration: 1.0) {
       cell.alpha = 1
     }
   }

@@ -98,7 +98,7 @@ class PPlaceListWorker {
                 weatherItem.sportDetails = sportItem
               }
             
-              if !self.isExist(Int(weatherItem.venueID)) {
+              if !self.exists(Int(weatherItem.venueID)) {
                 do {
                   try self.managedContext.save()
                 } catch {
@@ -120,12 +120,13 @@ class PPlaceListWorker {
     task.resume()
   }
   
-  func isExist(_ venueID: Int) -> Bool {
+  func exists(_ venueID: Int) -> Bool {
     let fetchRequest: NSFetchRequest<Weather> = Weather.fetchRequest()
     fetchRequest.predicate = NSPredicate(format: "venueID = \(venueID)", argumentArray: nil)
     
     do {
       let res = try managedContext.fetch(fetchRequest)
+      print("\(venueID) : \(res.count)")
       return res.count > 0 ? true : false
     } catch {
       return false
