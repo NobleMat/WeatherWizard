@@ -21,8 +21,7 @@ class ParticleEmitter {
     var cells = [CAEmitterCell]()
     
     let cell = CAEmitterCell()
-//    cell.color = UIColor.white.cgColor
-    cell.contents = image/*.withRenderingMode(.alwaysTemplate)*/.cgImage
+    cell.contents = image.cgImage
     cell.birthRate = 1
     cell.lifetime = 50
     cell.velocity = CGFloat(25)
