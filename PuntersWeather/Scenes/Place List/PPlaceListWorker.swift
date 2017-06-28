@@ -22,7 +22,7 @@ class PPlaceListWorker {
    The fetched data is then stored into a model and is then shownin the viewController
    */
   func fetchWeatherData(completion: @escaping(Bool) -> ()) {
-    
+    self.clearData()
     //Setting up the URL Request
     guard let endpointURL = URL(string: mainURL) else {
       print("Endpoint URL error")
@@ -130,6 +130,20 @@ class PPlaceListWorker {
       return res.count > 0 ? true : false
     } catch {
       return false
+    }
+  }
+  
+  func clearData() {
+    do {
+      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Weather")
+      let objects = try managedContext.fetch(fetchRequest) as! [Weather]
+      
+      for object in objects {
+        managedContext.delete(object)
+      }
+      try managedContext.save()
+    } catch {
+      print("Coudl not delete \(error.localizedDescription)")
     }
   }
 

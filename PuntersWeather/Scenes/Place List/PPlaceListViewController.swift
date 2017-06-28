@@ -67,7 +67,6 @@ class PPlaceListViewController: UIViewController, PPlaceListViewControllerInput 
   func loadData() {
     let weatherDataUpdate: NSFetchRequest<Weather> = Weather.fetchRequest()
     do {
-      
       weatherItems = try managedContext.fetch(weatherDataUpdate)
       weatherItems = weatherItems.sorted {
         $0.0.placeName! < $0.1.placeName!
