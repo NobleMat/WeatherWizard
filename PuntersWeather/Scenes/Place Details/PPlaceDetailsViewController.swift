@@ -66,7 +66,7 @@ class PPlaceDetailsViewController: UIViewController {
         emitter.emitterPosition = CGPoint(x: backgroundView.frame.width / 2, y: 50)
         emitter.emitterSize = CGSize(width: backgroundView.frame.width, height: 2)
         UIView.animate(withDuration: 1.0, animations: {
-          self.backgroundView.layer.addSublayer(emitter)
+          self.backgroundView.layer.insertSublayer(emitter, at: 0)
         })
         return
       }
@@ -99,7 +99,7 @@ class PPlaceDetailsViewController: UIViewController {
         backgroundView.firstColor = UIColor.white
         backgroundView.secondColor = UIColor.gray
         
-        let emitter = ParticleEmitter.get(with: #imageLiteral(resourceName: "Snowy"))
+        let emitter = ParticleEmitter.get(with: #imageLiteral(resourceName: "Fog"))
         emitter.emitterPosition = CGPoint(x: backgroundView.frame.width / 2, y: 50)
         emitter.emitterSize = CGSize(width: backgroundView.frame.width, height: 2)
         UIView.animate(withDuration: 1.0, animations: {
