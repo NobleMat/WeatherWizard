@@ -60,7 +60,7 @@
           }
           
           //Move data into Model Objects/ Core data
-          let weatherData = weatherDetails["data"] as? [[String: Any]]
+          let weatherData = weatherDetails[JSONHeadString] as? [[String: Any]]
           if let weatherData = weatherData {
             for weather in weatherData {
               print("Details as \n" + weather.description)

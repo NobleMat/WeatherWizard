@@ -25,6 +25,11 @@ class PPlaceDetailsViewController: UIViewController {
     self.title = "Details"
   }
   
+  /**
+   Build the weather details string from the input weather object
+   
+   - parameter weather: An object of Weather model which contains all the details of the current weather
+   */
   func buildWeatherDetails(weather: Weather) -> String {
     var finalDetailsString = ""
     if let country = weather.countryDetails, let countryName = country.countryName {
@@ -46,6 +51,11 @@ class PPlaceDetailsViewController: UIViewController {
     return finalDetailsString
   }
   
+  /**
+   Create dynamic backgrounds for different types of weather conditions
+   
+   - parameter weather: An object of Weather model which contains all the details of the current weather
+   */
   func addBackgroundDetails(_ weather: Weather) {
     if let weatherCondition = weather.weatherCondition {
       if weatherCondition.contains("Thunderstorm") || weatherCondition.contains("Light Rain Showers") || weatherCondition.contains("Rain") || weatherCondition.contains("Light Rain") {
@@ -92,7 +102,7 @@ class PPlaceDetailsViewController: UIViewController {
         let emitter = ParticleEmitter.get(with: #imageLiteral(resourceName: "Snowy"))
         emitter.emitterPosition = CGPoint(x: backgroundView.frame.width / 2, y: 50)
         emitter.emitterSize = CGSize(width: backgroundView.frame.width, height: 2)
-        UIView.animate(withDuration: 1.0, animations: { 
+        UIView.animate(withDuration: 1.0, animations: {
           self.backgroundView.layer.addSublayer(emitter)
         })
         

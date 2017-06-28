@@ -12,6 +12,7 @@ var mainURL = "http://dnu5embx6omws.cloudfront.net/venues/weather.json"
 
 
 //JSON Constants
+var JSONHeadString = "data"
 var venueIDString = "_venueID"
 var placeNameString = "_name"
 var weatherConditionString = "_weatherCondition"

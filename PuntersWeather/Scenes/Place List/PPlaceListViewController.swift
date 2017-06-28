@@ -255,7 +255,7 @@ extension PPlaceListViewController: UICollectionViewDataSource {
     
     cell.placeNameLabel.text = weatherData.placeName
     cell.temperatureLabel.text = "\(weatherData.weatherTemperature) ºc"
-    cell.lastUpdateLabel.text = "last updated on \(weatherData.weatherLastUpdated.convertToDateString())"
+    cell.lastUpdateLabel.text = "Last updated on \(weatherData.weatherLastUpdated.convertToDateString())"
     cell.weatherConditionLabel.text = weatherData.countryDetails?.countryName
     
     return cell
